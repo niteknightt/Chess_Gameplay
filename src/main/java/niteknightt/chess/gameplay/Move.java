@@ -337,9 +337,13 @@ public class Move {
         StringBuilder sb = new StringBuilder();
         sb.append(prefix);
         sb.append(":");
+        int counter = 1;
         for (Move move : moves) {
-            sb.append(" ");
+            sb.append(" " + counter + ": ");
             sb.append(move.toString());
+            sb.append(" - ");
+            sb.append(move.uciFormat());
+            ++counter;
         }
 
         return sb.toString();

@@ -45,7 +45,7 @@ publishing {
         gpr(MavenPublication) {
             groupId='niteknightt.chess'
             artifactId='gameplay'
-            version='0.2'
+            version='0.2.001'
             from(components.java)
         }
     }
