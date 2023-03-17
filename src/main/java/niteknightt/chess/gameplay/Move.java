@@ -337,13 +337,12 @@ public class Move {
         StringBuilder sb = new StringBuilder();
         sb.append(prefix);
         sb.append(":");
-        int counter = 1;
         for (Move move : moves) {
-            sb.append(" " + counter + ": ");
+            sb.append(" (");
             sb.append(move.toString());
-            sb.append(" - ");
+            sb.append(" or ");
             sb.append(move.uciFormat());
-            ++counter;
+            sb.append(")");
         }
 
         return sb.toString();
@@ -351,7 +350,7 @@ public class Move {
 
     @Override
     public String toString() {
-        return _algebraicFormat;
+        return algebraicFormat();
     }
 
     protected Position _source = new Position();

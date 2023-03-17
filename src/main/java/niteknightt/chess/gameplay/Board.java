@@ -356,7 +356,7 @@ public class Board {
 
         return false;
     }
-    protected void _calculateLegalMoves() {
+    public void _calculateLegalMoves() {
         _legalMoves.clear();
         for (Piece piece : _pieces) {
             if (piece.pieceType() == Enums.PieceType.BLANK || piece.color() != _whosTurnToGo) {
