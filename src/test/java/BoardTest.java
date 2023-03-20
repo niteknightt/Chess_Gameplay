@@ -1,3 +1,4 @@
+import niteknightt.chess.common.Enums;
 import niteknightt.chess.gameplay.Board;
 import niteknightt.chess.gameplay.Move;
 import niteknightt.chess.gameplay.Piece;
@@ -18,5 +19,24 @@ public class BoardTest {
         List<Move> moves = board.getLegalMoves();
         Assertions.assertNotNull(moves);
         Assertions.assertEquals(1, moves.size());
+    }
+
+    @Test
+    public void testCastlingRightsAfterRookCapture() {
+        // Test that castling gets ruined for the opponent when you capture
+        // their rook.
+        Board board = new Board();
+        board.setupFromFen("rnbqkbnr/p2ppp1p/6p1/2pQ4/2p1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 0 5");
+        Assertions.assertTrue(board.castlingRights(Enums.Color.WHITE, Enums.CastleSide.KINGSIDE));
+        Assertions.assertTrue(board.castlingRights(Enums.Color.WHITE, Enums.CastleSide.QUEENSIDE));
+        Assertions.assertTrue(board.castlingRights(Enums.Color.BLACK, Enums.CastleSide.KINGSIDE));
+        Assertions.assertTrue(board.castlingRights(Enums.Color.BLACK, Enums.CastleSide.QUEENSIDE));
+
+        Move move = new Move("Qxa8", board);
+        board.handleMoveForGame(move);
+        Assertions.assertTrue(board.castlingRights(Enums.Color.WHITE, Enums.CastleSide.KINGSIDE));
+        Assertions.assertTrue(board.castlingRights(Enums.Color.WHITE, Enums.CastleSide.QUEENSIDE));
+        Assertions.assertTrue(board.castlingRights(Enums.Color.BLACK, Enums.CastleSide.KINGSIDE));
+        Assertions.assertFalse(board.castlingRights(Enums.Color.BLACK, Enums.CastleSide.QUEENSIDE));
     }
 }

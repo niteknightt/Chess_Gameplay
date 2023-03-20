@@ -11,7 +11,7 @@ public class MoveProperties {
     protected Enums.PieceType _promotionResult = Enums.PieceType.BLANK; // implicit from move
     protected boolean _isCapture; //yes
     protected Enums.PieceType _pieceTypeCaptured = Enums.PieceType.BLANK; //yes
-    protected boolean _ruinedCastling[] = new boolean[2]; //yes
+    protected boolean _ruinedCastling[] = new boolean[4]; //yes
     protected boolean _isEnPassant; // implicit from move
     protected boolean _ruinedEnPassant; //yes
     protected Position _ruinedEnPassantTarget = new Position(); //yes
@@ -40,7 +40,7 @@ public class MoveProperties {
         //_isStalemate = move.isStalemate();
     }
 
-    public void setRuinedCastling(Enums.CastleSide castleSide, boolean val) { _ruinedCastling[castleSide.getValue()] = val; }
+    public void setRuinedCastling(Enums.Color color, Enums.CastleSide castleSide, boolean val) { _ruinedCastling[color.getValue() * 2 + castleSide.getValue()] = val; }
     public void setFenBefore(String fen) { _fenBefore = fen; }
     public void setFenAfter(String fen) { _fenAfter = fen; }
     public void setRuinedEnPassant(boolean val) { _ruinedEnPassant = val; }

@@ -505,14 +505,16 @@ public class Board {
 
         Piece movedPiece = _pieces.get(startIndex);
 
-        moveProps.setRuinedCastling(Enums.CastleSide.KINGSIDE, false);
-        moveProps.setRuinedCastling(Enums.CastleSide.QUEENSIDE, false);
+        moveProps.setRuinedCastling(move.color(), Enums.CastleSide.KINGSIDE, false);
+        moveProps.setRuinedCastling(move.color(), Enums.CastleSide.QUEENSIDE, false);
+        moveProps.setRuinedCastling(Enums.Color.oppositeColor(move.color()), Enums.CastleSide.KINGSIDE, false);
+        moveProps.setRuinedCastling(Enums.Color.oppositeColor(move.color()), Enums.CastleSide.QUEENSIDE, false);
 
         if (move.isCastle() || move.pieceType() == Enums.PieceType.KING) {
             for (int i = 0; i < 2; ++i) {
                 if (castlingRights(move.color(), Enums.CastleSide.values()[i])) {
                     setCastlingRights(move.color(), Enums.CastleSide.values()[i], false);
-                    moveProps.setRuinedCastling(Enums.CastleSide.values()[i], true);
+                    moveProps.setRuinedCastling(move.color(), Enums.CastleSide.values()[i], true);
                 }
             }
         }
@@ -522,7 +524,7 @@ public class Board {
                 Enums.CastleSide castleSide = (move.source().col == 0 ? Enums.CastleSide.QUEENSIDE : Enums.CastleSide.KINGSIDE);
                 if (castlingRights(move.color(), castleSide)) {
                     setCastlingRights(move.color(), castleSide, false);
-                    moveProps.setRuinedCastling(castleSide, true);
+                    moveProps.setRuinedCastling(move.color(), castleSide, true);
                 }
             }
         }
@@ -602,6 +604,19 @@ public class Board {
             _pieces.set(endIndex, _pieces.get(startIndex));
             _pieces.get(endIndex).setPosition(endPos.col, endPos.row);
             _pieces.set(startIndex, Piece.GetBlankPiece());
+        }
+
+        if (move.isCapture() && move.pieceTypeCaptured() == Enums.PieceType.ROOK) {
+            int rookRow = (move.color() == Enums.Color.WHITE ? 7 : 0);
+            Enums.CastleSide castleSide = (move.target().col == 0 ? Enums.CastleSide.QUEENSIDE : Enums.CastleSide.KINGSIDE);
+            if (move.target().col == 0 && move.target().row == rookRow) {
+                setCastlingRights(Enums.Color.oppositeColor(move.color()), castleSide, false);
+                moveProps.setRuinedCastling(Enums.Color.oppositeColor(move.color()), castleSide, true);
+            }
+            if (move.target().col == 7 && move.target().row == rookRow) {
+                setCastlingRights(Enums.Color.oppositeColor(move.color()), castleSide, false);
+                moveProps.setRuinedCastling(Enums.Color.oppositeColor(move.color()), castleSide, true);
+            }
         }
 
         _isCheck = _scanForCheck();
@@ -700,9 +715,9 @@ public class Board {
         _whosTurnToGo = lastMove.color();
         _halfMoveClock = lastMoveProps.halfMoveClockBefore();
 
-        for (int i = 0; i < 2; ++i) {
+        for (int i = 0; i < 4; ++i) {
             if (lastMoveProps.ruinedCastling(i)) {
-                setCastlingRights(lastMove.color(), Enums.CastleSide.values()[i], true);
+                setCastlingRights(Enums.Color.values()[i / 2], Enums.CastleSide.values()[i % 2], true);
             }
         }
 
