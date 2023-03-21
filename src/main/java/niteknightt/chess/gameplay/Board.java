@@ -609,11 +609,11 @@ public class Board {
         if (move.isCapture() && move.pieceTypeCaptured() == Enums.PieceType.ROOK) {
             int rookRow = (move.color() == Enums.Color.WHITE ? 7 : 0);
             Enums.CastleSide castleSide = (move.target().col == 0 ? Enums.CastleSide.QUEENSIDE : Enums.CastleSide.KINGSIDE);
-            if (move.target().col == 0 && move.target().row == rookRow) {
+            if (move.target().col == 0 && move.target().row == rookRow && castlingRights(Enums.Color.oppositeColor(move.color()), castleSide)) {
                 setCastlingRights(Enums.Color.oppositeColor(move.color()), castleSide, false);
                 moveProps.setRuinedCastling(Enums.Color.oppositeColor(move.color()), castleSide, true);
             }
-            if (move.target().col == 7 && move.target().row == rookRow) {
+            if (move.target().col == 7 && move.target().row == rookRow && castlingRights(Enums.Color.oppositeColor(move.color()), castleSide)) {
                 setCastlingRights(Enums.Color.oppositeColor(move.color()), castleSide, false);
                 moveProps.setRuinedCastling(Enums.Color.oppositeColor(move.color()), castleSide, true);
             }

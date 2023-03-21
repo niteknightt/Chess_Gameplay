@@ -22,6 +22,16 @@ public class BoardTest {
     }
 
     @Test
+    public void testAnotherLegalMove() {
+        // This caused a crash in the bot. Not sure why.
+        Board board = new Board();
+        board.setupFromFen("r1bq3r/3kp1Q1/2pp4/p1n4p/P1B1P3/2N2N1P/1PP2PP1/R4RK1 b - - 0 19");
+        //Piece piece = board.pieceAt(new Position(3, 7));
+        Move move = new Move("Kc7", board);
+        board.handleMoveForGame(move);
+    }
+
+    @Test
     public void testCastlingRightsAfterRookCapture() {
         // Test that castling gets ruined for the opponent when you capture
         // their rook.
