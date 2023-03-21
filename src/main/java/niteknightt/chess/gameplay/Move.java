@@ -338,11 +338,8 @@ public class Move {
         sb.append(prefix);
         sb.append(":");
         for (Move move : moves) {
-            sb.append(" (");
+            sb.append(" ");
             sb.append(move.toString());
-            sb.append(" or ");
-            sb.append(move.uciFormat());
-            sb.append(")");
         }
 
         return sb.toString();
